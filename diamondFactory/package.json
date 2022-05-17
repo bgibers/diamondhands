@@ -1,0 +1,15 @@
+{
+  "name": "diamondfactory",
+  "version": "1.0.0",
+  "description": "Factory for generating diamonds",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brendan Giberson",
+  "license": "ISC",
+  "dependencies": {
+    "nice-color-palettes": "^3.0.0",
+    "trianglify": "^4.1.1"
+  }
+}

@@ -1,5 +1,6 @@
 {
-   "solidity.packageDefaultDependenciesDirectory": "node_modules/@scaffold-eth/hardhat/node_modules/",
+  "solidity.packageDefaultDependenciesDirectory": "node_modules/@scaffold-eth/hardhat/node_modules/",
+  "solidity.packageDefaultDependenciesContractsDirectory": "",
    "solidity-va.test.defaultUnittestTemplate": "hardhat",
    "files.exclude": {
       "**/.git": true,
@@ -31,5 +32,7 @@
    "search.exclude": {
       "**/yarn-error.log": true,
       "**/yarn.lock": true
-   }
+  },
+  "solidity.defaultCompiler": "localNodeModule",
+  "solidity.compileUsingLocalVersion": "/Users/Brendan.Giberson/Documents/Dev/web3/diamondhands/contract/soljson-v0.8.14+commit.80d49f37.js"
 }

@@ -20,18 +20,18 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   await deploy("DiamondHands", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    args: [ "1000" ],
     log: true,
     waitConfirmations: 5,
   });
 
   // Getting a previously deployed contract
   const DiamondHands = await ethers.getContract("DiamondHands", deployer);
+  await DiamondHands.transferOwnership("0xF3A5ad23d9c535c46089fe969384dF80578debB9");
   /*  await DiamondHands.setPurpose("Hello");
   
     To take ownership of DiamondHands using the ownable library uncomment next line and add the 
     address you want to be the owner. 
-    // await DiamondHands.transferOwnership(YOUR_ADDRESS_HERE);
 
     //const DiamondHands = await ethers.getContractAt('DiamondHands', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
   */

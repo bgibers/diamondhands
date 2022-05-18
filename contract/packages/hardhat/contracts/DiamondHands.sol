@@ -53,8 +53,11 @@ contract DiamondHands is ERC721A, Ownable, ReentrancyGuard {
 
     uint256 public immutable maxSupply;
     uint256 public constant maxPerAddressDuringMint = 5;
-    uint256 public constant airdropSupply = 20;
-    uint256 public freeSupplyRemaining  = 50;
+    uint256 public constant mintPrice = .01 ether;
+
+    uint256 public  airdropSupplyRemaining = 20;
+    uint256 public freeSupplyRemaining  = 100;
+
     string private _baseTokenURI;
 
     constructor(uint256 _maxSupply) ERC721A('DiamondHands', 'DMD') {
@@ -62,39 +65,57 @@ contract DiamondHands is ERC721A, Ownable, ReentrancyGuard {
     }
 
     function publicMint(uint256 quantity) external payable {
+        require(quantity <= 5, "You can only mint 5 at a time");
+        require(totalSupply() + quantity <= maxSupply, "reached max supply");
 
+        _mint(msg.sender, quantity);
+        refundOverPayment(quantity * mintPrice);
     }
 
-    function freeMint() external payable {
-        require(numberMinted(msg.sender) < 1, "You can only claim one free mint");
+    function freeMint(uint256 quantity) external payable {
+        require(numberMinted(msg.sender) + quantity <= 5, "You can only claim 5 free mints");
         require(freeSupplyRemaining > 0 , "There are no free mints left :(");
 
-        _mint(to, quantity);
-        
+        freeSupplyRemaining = freeSupplyRemaining.sub(quantity);
+        _mint(msg.sender, quantity);
     }
 
     function refundOverPayment(uint256 price) private {
         require(msg.value >= price, "Need to send more ETH.");
+
         if (msg.value > price) {
             payable(msg.sender).transfer(msg.value - price);
         }
     }
 
-    function withdraw() public onlyOwner nonReentrant{
+    function withdraw() public onlyOwner nonReentrant {
         uint256 balance = address(this).balance;
         payable(msg.sender).transfer(balance);
     }
 
-    function airdrop( address[] calldata receivers) external onlyOwner {
-        
+    /*
+        Reward early founders of the project:)
+    */
+    function airdrop(address[] calldata receivers) external onlyOwner {
+        require(airdropSupplyRemaining > receivers.length, "Not enough airdrop allocations left");
+
+        for (uint256 i; i < receivers.length; ++i) {
+            _mint(receivers[i], 1);
+            airdropSupplyRemaining --;
+        }
+    }
+
+    function ownerClaim() external onlyOwner {
+        _mint(msg.sender, airdropSupplyRemaining);
+        airdropSupplyRemaining = 0;
     }
 
     function setBaseURI(string calldata baseURI) external onlyOwner {
         _baseTokenURI = baseURI;
     }
 
-    function numberMinted(address owner) public view returns (uint256) {
-        return _numberMinted(owner);
+    function numberMinted(address tknOwner) public view returns (uint256) {
+        return _numberMinted(tknOwner);
     }
 
     function _baseURI() internal view virtual override returns (string memory) {

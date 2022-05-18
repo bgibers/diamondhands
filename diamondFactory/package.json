@@ -11,5 +11,8 @@
   "dependencies": {
     "nice-color-palettes": "^3.0.0",
     "trianglify": "^4.1.1"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^3.2.7"
   }
 }

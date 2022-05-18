@@ -23,14 +23,14 @@
 CONFIG = [
     {
         'id': 1,
-        'name': 'background',
+        'name': 'Background',
         'directory': 'backgrounds',
         'required': True,
         'rarity_weights': None,
     },
     {
         'id': 2,
-        'name': 'hand',
+        'name': 'Gesture',
         'directory': 'hands',
         'required': True,
         'rarity_weights': None,

@@ -16,12 +16,12 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 # Base metadata. MUST BE EDITED.
-BASE_IMAGE_URL = "ipfs://QmSZYEVArevnXnVJMJRbKryW4vjq7Mczp4j62tEi11b1Qj"
-BASE_NAME = "Test"
+BASE_IMAGE_URL = "ipfs://QmQyw1hGdSvcQVX8pAGirJ4UgzYAxddt1VQ6RzHQjTod9p"
+BASE_NAME = "Diamond Hands"
 
 BASE_JSON = {
     "name": BASE_NAME,
-    "description": "",
+    "description": "Algorithmically generated. Forever on chain. Diamond hands.",
     "image": BASE_IMAGE_URL,
     "attributes": [],
 }
@@ -103,7 +103,17 @@ def run():
         # Add all existing traits to attributes dictionary
         for attr in attr_dict:
             
-            if attr_dict[attr] != 'none':
+            if attr == 'File':
+                file_path = os.path.join('assets', 'metadata', f'{attr_dict[attr]}.json')
+                f = open(file_path)
+                json_object = json.load(f)
+                
+                for key, value in json_object.items():
+                    item_json['attributes'].append({ 'trait_type': key, 'value': json_object[key] })
+                    
+                f.close()
+
+            if attr_dict[attr] != 'none' and attr != 'File':
                 item_json['attributes'].append({ 'trait_type': attr, 'value': attr_dict[attr] })
         
         # Write file to json folder
